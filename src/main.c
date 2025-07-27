@@ -40,12 +40,9 @@ read_line(const int client_fd, char *const buf, size_t max_len) {
 int
 main(__attribute__((unused)) int ac, __attribute__((unused)) char **av, char **env) {
     int server_fd, client_fd;
-    struct sockaddr_in address;
+    struct sockaddr_in address = {.sin_family = AF_INET, .sin_addr.s_addr = INADDR_ANY, .sin_port = htons(3443)};
 
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(3443);
 
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) == -1) {
         fprintf(stderr, "Error binding to fd %d: %s", server_fd, strerror(errno));
