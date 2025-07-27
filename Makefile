@@ -1,5 +1,5 @@
 NAME = ft_shield
-PAYLOAD_NAME = payload
+PAYLOAD_NAME = server
 
 OBJ_DIR = obj
 SRC_DIR = src
