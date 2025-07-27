@@ -1,23 +1,18 @@
 {
-	"name": "woody-woodpacker",
-	"runArgs": [
-		"--name",
-		"dev-woody-woodpacker"
-	],
-	"dockerFile": "Dockerfile",
-	"mounts": [
-		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
-		"source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
-	],
-	"customizations": {
-		"vscode": {
-			"settings": {
-				"terminal.integrated.shell.linux": "/bin/bash"
-			},
-			"extensions": [
-				"llvm-vs-code-extensions.vscode-clangd"
-			]
-		}
-	},
-	"workspaceFolder": "/workspaces/woody-woodpacker"
+    "name": "woody-woodpacker",
+    "runArgs": ["--name", "dev-ft_shield"],
+    "dockerFile": "Dockerfile",
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+    ],
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash"
+            },
+            "extensions": ["llvm-vs-code-extensions.vscode-clangd"]
+        }
+    },
+    "workspaceFolder": "/workspaces/ft_shield"
 }
