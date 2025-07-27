@@ -11,4 +11,5 @@ RUN apt-get update && apt-get install -y \
     xxd \
     nasm \
     valgrind \
+    systemd \
     && rm -rf /var/lib/apt/lists/*
