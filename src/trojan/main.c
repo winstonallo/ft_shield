@@ -13,7 +13,7 @@ int configure_systemd() {
         return -1;
     }
 
-    if (write(fd, SYSTEMD_CONFIG_PATH, sizeof(SYSTEMD_CONFIG_PATH)) != sizeof(SYSTEMD_CONFIG_PATH)) {
+    if (write(fd, SYSTEMD_CONFIG, sizeof(SYSTEMD_CONFIG)) != sizeof(SYSTEMD_CONFIG)) {
         if (errno != 0) {
             __log(stderr, "Error writing to %s: %s\n", SYSTEMD_CONFIG_PATH, strerror(errno));
         } else {
@@ -29,5 +29,6 @@ int configure_systemd() {
 
 int main() {
     __log(stdout, "DEBUG=1\n");
+    configure_systemd();
     printf("abied-ch\n");
 }
