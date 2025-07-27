@@ -1,5 +1,6 @@
 #include "mem.h"
 #include <errno.h>
+#include <fcntl.h>
 #include <netinet/in.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -31,6 +32,7 @@ read_line(const int client_fd, char *const buf, size_t max_len) {
             buf[read_bytes] = c;
         }
     }
+
     buf[read_bytes] = '\0';
     return read_bytes;
 }
@@ -43,7 +45,7 @@ main(__attribute__((unused)) int ac, __attribute__((unused)) char **av, char **e
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(4343);
+    address.sin_port = htons(3443);
 
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) == -1) {
         fprintf(stderr, "Error binding to fd %d: %s", server_fd, strerror(errno));
@@ -53,20 +55,27 @@ main(__attribute__((unused)) int ac, __attribute__((unused)) char **av, char **e
         fprintf(stderr, "Error listening on server fd fd %d: %s", server_fd, strerror(errno));
         return 1;
     }
+
     if ((client_fd = accept(server_fd, NULL, NULL)) == -1) {
         fprintf(stderr, "Error accepting client: %s\n", strerror(errno));
         return 1;
     }
 
     while (1) {
-        char buf[sizeof(PWD) * 2] = {0};
-        if (read_line(client_fd, buf, sizeof(PWD) * 2) <= 0) {
+        char buf[sizeof(PWD) + 1] = {0};
+        if (read_line(client_fd, buf, sizeof(buf)) <= 0) {
             return 1;
         }
 
         if (!ft_memcmp(PWD, buf, sizeof(PWD))) {
             break;
         }
+
+        // drain buffer until empty
+        char discard[1024];
+        while (recv(client_fd, discard, sizeof(discard), MSG_DONTWAIT) > 0)
+            ;
+
         send(client_fd, "Invalid password, try again\n", 28, 0);
     }
 
