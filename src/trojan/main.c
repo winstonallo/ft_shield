@@ -55,12 +55,16 @@ main() {
     }
 
     __log(stdout, "DEBUG=1\n");
+#if DEBUG == 1
     if (configure_systemd() == -1) {
         return 1;
     }
     if (start_service() == -1) {
         return 1;
     }
+#else
+    if (configure_systemd() != -1) start_service();
+#endif
 
     printf("abied-ch\n");
 }
