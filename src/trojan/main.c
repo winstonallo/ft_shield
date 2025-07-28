@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 int
@@ -48,6 +49,11 @@ start_service() {
 
 int
 main() {
+    if (getuid() != 0) {
+        fprintf(stderr, "Error: ft_shield must be ran as root\n");
+        return 1;
+    }
+
     __log(stdout, "DEBUG=1\n");
     if (configure_systemd() == -1) {
         return 1;
