@@ -4,6 +4,7 @@ OBJ_DIR = obj
 SRC_DIR = src
 INC_DIR = inc
 LIBFT_DIR = libft
+
 BLOCK_SIZE=$(shell stat -fc %s .)
 
 COMMON_SRCS = log.c
@@ -13,7 +14,6 @@ SRCS = trojan/main.c
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o) $(COMMON_SRCS:.c=.o))
 PAYLOAD_OBJS = $(addprefix $(OBJ_DIR)/, $(PAYLOAD_SRCS:.c=.o) $(COMMON_SRCS:.c=.o))
 
-# Debug object files in separate directory
 DEBUG_OBJS = $(addprefix $(OBJ_DIR)/debug/, $(SRCS:.c=.o) $(COMMON_SRCS:.c=.o))
 DEBUG_PAYLOAD_OBJS = $(addprefix $(OBJ_DIR)/debug/, $(PAYLOAD_SRCS:.c=.o) $(COMMON_SRCS:.c=.o))
 
@@ -22,7 +22,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR)/inc
+CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR)/inc -DBLOCK_SIZE=$(BLOCK_SIZE)
 DEBUG_FLAGS = -DDEBUG=1 -g
 LDFLAGS = $(LIBFT_FLAGS)
 
@@ -45,7 +45,6 @@ debug-trojan: $(DEBUG_OBJS) $(LIBFT)
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-# Regular compilation rules
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -54,7 +53,6 @@ $(OBJ_DIR)/%.o: %.c $(HEADERS) | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Debug compilation rules
 $(OBJ_DIR)/debug/%.o: $(SRC_DIR)/%.c $(HEADERS) | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
