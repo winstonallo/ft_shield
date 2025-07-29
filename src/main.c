@@ -154,7 +154,6 @@ main(int ac, char **av, char **env) {
     }
 
     decode_strings(strings, sizeof(strings) / sizeof(strings[0]));
-    __log(stdout, "Decoded strings\n");
 
     char activation_key[ACTIVATION_KEY_LEN + 1] = {0};
     if (get_activation_key(activation_key) == -1) {
