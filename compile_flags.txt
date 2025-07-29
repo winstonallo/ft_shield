@@ -4,3 +4,4 @@
 -Wextra
 -Werror
 -DDEBUG=1
+-DBLOCK_SIZE=4096
