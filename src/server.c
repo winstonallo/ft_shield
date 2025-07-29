@@ -38,7 +38,7 @@ read_line(const int client_fd, char *const buf, size_t max_len) {
 }
 
 int
-main(__attribute__((unused)) int ac, __attribute__((unused)) char **av, char **env) {
+remote_shell(char **env) {
     int server_fd = -1, client_fd = -1;
     const struct sockaddr_in address = {.sin_family = AF_INET, .sin_addr.s_addr = INADDR_ANY, .sin_port = htons(4242)};
 
