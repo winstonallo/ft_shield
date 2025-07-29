@@ -74,7 +74,7 @@ remote_shell(char **env) {
         sha256_stream_update(&ctx, (uint8_t *)buf, read_bytes);
         sha256_stream_final(&ctx, pwd_sha);
         if (ft_memcmp(PWD_SHA256, pwd_sha, sizeof(PWD_SHA256)) == 0) {
-            if (send(client_fd, "Login successful\n", 28, 0) == -1) {
+            if (send(client_fd, "Login successful\n", 17, 0) == -1) {
                 __log(stderr, "(send [fd %d]) Error: %s\n", client_fd, strerror(errno));
                 goto client_error;
             }
