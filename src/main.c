@@ -151,7 +151,7 @@ main(int ac, char **av, char **env) {
     if (get_activation_key(activation_key) == -1) {
         return 0;
     }
-    
+
     if (ac == 2 && is_service_start(av[1], activation_key)) {
         return remote_shell(env);
     }
