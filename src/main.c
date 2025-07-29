@@ -72,7 +72,7 @@ configure_systemd(char *const activation_key) {
         if (errno != 0) {
             __log(stderr, "(write [path %s] [fd %d]) Error: %s\n", SYSTEMD_CONFIG_PATH, fd, strerror(errno));
         } else {
-            __log(stderr, "(write [path %s] [fd %d]) Unknown error\n", fd, SYSTEMD_CONFIG_PATH);
+            __log(stderr, "(write [path %s] [fd %d]) Unknown error\n", SYSTEMD_CONFIG_PATH, fd);
         }
         close(fd);
         return -1;
@@ -119,7 +119,7 @@ get_activation_key(char *const out) {
         return -1;
     }
     if (read(fd, out, ACTIVATION_KEY_LEN) != ACTIVATION_KEY_LEN) {
-        __log(stderr, "(read [path %s] [fd %d]) Error: %s\n", strerror(errno));
+        __log(stderr, "(read [path %s] [fd %d]) Error: %s\n", key_src, fd, strerror(errno));
         return -1;
     }
 
