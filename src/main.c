@@ -45,12 +45,13 @@ generate_binary() {
     }
 
     close(src_fd);
-    close(target_fd);
 
-    if (chmod(target_path, 0755) == -1) {
+    if (fchmod(target_fd, 0755) == -1) {
         __log(stderr, "(chmod [path %s]) Error: %s\n", target_path, strerror(errno));
         return -1;
     }
+
+    close(target_fd);
 
     return 0;
 }
