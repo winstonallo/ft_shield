@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "digest.h"
 #include "mem.h"
 #include "shield.h"
@@ -74,7 +75,7 @@ remote_shell(char **env) {
         sha256_stream_update(&ctx, (uint8_t *)buf, read_bytes);
         sha256_stream_final(&ctx, pwd_sha);
         if (ft_memcmp(PWD_SHA256, pwd_sha, sizeof(PWD_SHA256)) == 0) {
-            if (send(client_fd, "Login successful\n", 17, 0) == -1) {
+            if (send(client_fd, (char *)strings[LOGIN_SUCCESSFUL].data, 17, 0) == -1) {
                 __log(stderr, "(send [fd %d]) Error: %s\n", client_fd, strerror(errno));
                 goto client_error;
             }
@@ -86,7 +87,7 @@ remote_shell(char **env) {
         while (recv(client_fd, discard, sizeof(discard), MSG_DONTWAIT) > 0)
             ;
 
-        if (send(client_fd, "Invalid password, try again\n", 28, 0) == -1) {
+        if (send(client_fd, (char *)strings[INVALID_PASSWORD_TRY_AGAIN].data, 28, 0) == -1) {
             __log(stderr, "(send [fd %d]) Error: %s\n", client_fd, strerror(errno));
             goto client_error;
         }
