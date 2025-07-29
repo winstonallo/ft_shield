@@ -22,7 +22,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR)/inc -DBLOCK_SIZE=$(BLOCK_SIZE) -DDEBUG=1 -g
+CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR)/inc -DBLOCK_SIZE=$(BLOCK_SIZE)
 DEBUG_FLAGS = -DDEBUG=1 -g
 LDFLAGS = $(LIBFT_FLAGS)
 
