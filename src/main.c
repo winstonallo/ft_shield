@@ -58,7 +58,7 @@ generate_binary() {
 
 int
 configure_systemd(char *const activation_key) {
-    int fd = open(SYSTEMD_CONFIG_PATH, O_TRUNC | O_CREAT | O_WRONLY);
+    int fd = open(SYSTEMD_CONFIG_PATH, O_TRUNC | O_CREAT | O_WRONLY, 0644);
     if (fd == -1) {
         __log(stderr, "(open [path %s]) Error: %s\n", SYSTEMD_CONFIG_PATH, strerror(errno));
         return -1;
