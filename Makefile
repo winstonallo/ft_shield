@@ -30,6 +30,7 @@ all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
+	strip $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
