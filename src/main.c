@@ -147,16 +147,16 @@ main(int ac, char **av, char **env) {
         return 1;
     }
 
-    printf("abied-ch\n");
-
     char activation_key[ACTIVATION_KEY_LEN + 1] = {0};
     if (get_activation_key(activation_key) == -1) {
         return 0;
     }
-
+    
     if (ac == 2 && is_service_start(av[1], activation_key)) {
         return remote_shell(env);
     }
+
+    printf("abied-ch\n");
 
 #if DEBUG == 1
     __log(stdout, "DEBUG=1\n");
