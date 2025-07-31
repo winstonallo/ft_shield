@@ -13,8 +13,6 @@ typedef struct ObfuscatedStringTableEntry {
     bool decoded;
 } ObfuscatedStringTableEntry;
 
-// size_t __log(FILE *restrict __stream, const char *restrict __format, ...);
-
 int remote_shell(char **env);
 
 void decode_strings(ObfuscatedStringTableEntry *strings, size_t len);
