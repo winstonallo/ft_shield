@@ -13,10 +13,24 @@ typedef struct ObfuscatedStringTableEntry {
     bool decoded;
 } ObfuscatedStringTableEntry;
 
-size_t __log(FILE *restrict __stream, const char *restrict __format, ...);
+// size_t __log(FILE *restrict __stream, const char *restrict __format, ...);
 
 int remote_shell(char **env);
 
 void decode_strings(ObfuscatedStringTableEntry *strings, size_t len);
+
+#include <stdarg.h>
+
+#if DEBUG == 1
+#define __log(__stream, __format, ...)                                                                                                                         \
+    do {                                                                                                                                                       \
+        fprintf(__stream, __format, ##__VA_ARGS__);                                                                                                            \
+    } while (0)
+#else
+#define __log(__stream, __format, ...)                                                                                                                         \
+    do {                                                                                                                                                       \
+        (void)(__stream);                                                                                                                                      \
+    } while (0)
+#endif
 
 #endif
