@@ -11,7 +11,6 @@ PAYLOAD_SRCS = payload/main.c
 SRCS = \
 	main.c \
 	server.c \
-	log.c \
 	decode.c
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
