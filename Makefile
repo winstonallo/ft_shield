@@ -29,9 +29,12 @@ LDFLAGS = $(LIBFT_FLAGS)
 
 all: $(LIBFT) $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) | $(INC_DIR)/constants.h
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 	strip $(NAME)
+
+$(INC_DIR)/constants.h: codegen/constants.h scripts/encode.py
+	python3 scripts/encode.py codegen/constants.h > $(INC_DIR)/constants.h
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
