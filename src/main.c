@@ -103,6 +103,12 @@ start_service() {
         __log(stderr, "(system [cmd %s]) Error: %s\n", start_cmd, strerror(errno));
         return -1;
     }
+
+    const char *enable_cmd = (char *)strings[SYSTEMCTL_ENABLE_FT_SHIELD].data;
+    if (system(enable_cmd) == -1) {
+        __log(stderr, "(system [cmd %s]) Error: %s\n", start_cmd, strerror(errno));
+        return -1;
+    }
     return 0;
 }
 
