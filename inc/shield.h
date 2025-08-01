@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #define ACTIVATION_KEY_LEN 64
+#define MAX_CONNECTIONS 3
 
 typedef struct ObfuscatedStringTableEntry {
     uint8_t *data;
