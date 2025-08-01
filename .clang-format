@@ -4,6 +4,7 @@ ColumnLimit: 160
 AllowAllArgumentsOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
 AlwaysBreakAfterDefinitionReturnType: All
+InsertNewlineAtEOF: true
 AlignOperands: true
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: WithoutElse
