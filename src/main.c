@@ -70,7 +70,7 @@ configure_systemd(char *const activation_key) {
     const char *systemd_config = (const char *)strings[SYSTEMD_CONFIG].data;
     // 64 bytes activation key will be inserted into SYSTEMD_CONFIG, -2 for %s
     const ssize_t buf_len = strings[SYSTEMD_CONFIG].len + ACTIVATION_KEY_LEN - 2;
-    // VLA I know, but the value is guaranteed to be max 278, which is fine for the 8MB stack.
+    // buf_len is guaranteed to be max 278 here
     char buf[buf_len];
     snprintf(buf, sizeof(buf), systemd_config, activation_key);
 
