@@ -132,8 +132,11 @@ get_activation_key(char *const out) {
     }
     if (read(fd, out, ACTIVATION_KEY_LEN) != ACTIVATION_KEY_LEN) {
         __log(stderr, "(read [path %s] [fd %d]) Error: %s\n", key_src, fd, strerror(errno));
+        close(fd);
         return -1;
     }
+
+    close(fd);
 
     Sha256StreamingContext ctx = {0};
     sha256_stream_init(&ctx);
