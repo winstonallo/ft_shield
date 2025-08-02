@@ -33,7 +33,7 @@ static uint8_t systemd_config_path[] = OBFUSCATE("/etc/systemd/system/ft_shield.
 static uint8_t invalid_password_try_again[] = OBFUSCATE("Invalid password, try again\n");
 static uint8_t login_successful[] = OBFUSCATE("Login successful\n");
 static uint8_t bin_bash[] = OBFUSCATE("/bin/bash");
-static uint8_t too_many_connections[] = OBFUSCATE("too many connections already in use\n");
+static uint8_t too_many_connections[] = OBFUSCATE("Too many connections already in use\n");
 
 static ObfuscatedStringTableEntry strings[] = {
     {.data = (uint8_t *)proc_self_exe,              .len = sizeof(proc_self_exe),              .decoded = false},
