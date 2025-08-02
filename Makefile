@@ -32,7 +32,7 @@ LDFLAGS = $(LIBFT_FLAGS)
 
 all: $(LIBFT) $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) | $(INC_DIR)/constants.h
+$(NAME): $(OBJS) $(LIBFT) $(INC_DIR)/constants.h
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 	strip $(NAME)
 
