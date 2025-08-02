@@ -32,7 +32,7 @@ LDFLAGS = $(LIBFT_FLAGS)
 
 all: $(LIBFT) $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) | $(INC_DIR)/constants.h
+$(NAME): $(OBJS) $(LIBFT) $(INC_DIR)/constants.h
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 	strip $(NAME)
 
@@ -50,14 +50,6 @@ $(OBJ_DIR)/%.o: %.c $(HEADERS) | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/debug/%.o: $(SRC_DIR)/%.c $(HEADERS) | $(OBJ_DIR)
-	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
-
-$(OBJ_DIR)/debug/%.o: %.c $(HEADERS) | $(OBJ_DIR)
-	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
-
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/
 
@@ -71,4 +63,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all debug clean fclean re debug-payload debug-trojan payload trojan
+.PHONY: all debug clean fclean re payload trojan
