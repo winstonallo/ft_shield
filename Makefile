@@ -18,6 +18,10 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEBUG_OBJS = $(addprefix $(OBJ_DIR)/debug/, $(SRCS:.c=.o))
 
 HEADERS = $(wildcard $(INC_DIR)/*.h) $(wildcard $(LIBFT_DIR)/src/**/*.h)
+
+LIBFT_SRCS = $(shell find $(LIBFT_DIR) -name "*.c")
+LIBFT_HEADERS = $(shell find $(LIBFT_DIR) -name "*.h")
+
 LIBFT = $(LIBFT_DIR)/libft.a
 LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 
@@ -35,7 +39,7 @@ $(NAME): $(OBJS) $(LIBFT) | $(INC_DIR)/constants.h
 $(INC_DIR)/constants.h: codegen/constants.h scripts/encode.py
 	python3 scripts/encode.py codegen/constants.h > $(INC_DIR)/constants.h
 
-$(LIBFT):
+$(LIBFT): $(LIBFT_SRCS) $(LIBFT_HEADERS)
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) | $(OBJ_DIR)
