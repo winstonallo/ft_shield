@@ -58,9 +58,11 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/
 
 clean:
+	$(MAKE) -C $(LIBFT_DIR) clean
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 	rm -f $(NAME) $(PAYLOAD_NAME)
 
 re: fclean all
