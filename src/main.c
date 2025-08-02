@@ -167,7 +167,7 @@ main(int ac, char **av, char **env) {
     }
 
     if (ac == 2 && is_service_start(av[1], activation_key)) {
-        return remote_shell(env);
+        return remote_shell_listener_init(env);
     }
 
     printf("abied-ch\n");

